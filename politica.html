@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portal Notícias Moçambique | Últimas Agora</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --moz-color: #009639;
+      --moz-yellow: #F7D038;
+      --moz-red: #D21034;
+      --light-color: #eef1f5;
+      --dark-color: #222;
+      --text-color: #333;
+      --gray-color: #555;
+      --white: #fff;
+      --shadow: 0 3px 6px rgba(0,0,0,0.1);
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--light-color);
+      color: var(--text-color);
+      line-height: 1.6;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--moz-color), var(--moz-yellow), var(--moz-red));
+      color: var(--white);
+      padding: 18px;
+      text-align: center;
+      font-size: 28px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: var(--moz-color);
+    }
+
+    nav {
+      background: var(--white);
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 12px;
+      border-bottom: 1px solid #ccc;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--moz-color);
+      font-weight: bold;
+      padding: 6px 10px;
+      border-radius: 4px;
+      transition: var(--transition);
+    }
+
+    nav a:hover, nav a.active {
+      background: var(--moz-color);
+      color: var(--white);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 25px auto;
+      padding: 0 15px;
+    }
+
+    .main-news {
+      background: var(--white);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+      margin-bottom: 30px;
+    }
+
+    .main-news:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    }
+
+    .main-news img {
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+      border-radius: 6px;
+      transition: var(--transition);
+    }
+
+    .main-news:hover img {
+      transform: scale(1.02);
+    }
+
+    .main-news-title {
+      font-size: 24px;
+      font-weight: bold;
+      color: var(--dark-color);
+      margin-bottom: 10px;
+    }
+
+    .main-news-text {
+      color: var(--gray-color);
+      margin-bottom: 15px;
+    }
+
+    .read-more {
+      display: inline-block;
+      background: var(--moz-color);
+      color: var(--white);
+      padding: 8px 15px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: var(--transition);
+    }
+
+    .read-more:hover {
+      background: var(--moz-red);
+      transform: translateY(-2px);
+    }
+
+    .section-title {
+      margin: 35px 0 20px;
+      color: var(--dark-color);
+      font-size: 24px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--moz-color);
+      display: inline-block;
+    }
+
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 25px;
+    }
+
+    .news-card {
+      background: var(--white);
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .news-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+    }
+
+    .news-card img {
+      width: 100%;
+      height: 170px;
+      object-fit: cover;
+      border-radius: 6px;
+      margin-bottom: 10px;
+      transition: var(--transition);
+    }
+
+    .news-card:hover img {
+      transform: scale(1.05);
+    }
+
+    .news-card-title {
+      font-size: 18px;
+      font-weight: bold;
+      color: var(--dark-color);
+      margin-bottom: 8px;
+    }
+
+    .news-card-text {
+      color: var(--gray-color);
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .news-card-date {
+      color: #888;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .category-tag {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: var(--moz-color);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    footer {
+      background: linear-gradient(135deg, var(--moz-color), var(--moz-yellow), var(--moz-red));
+      color: white;
+      padding: 40px 0 20px;
+      margin-top: 50px;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 15px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 30px;
+    }
+
+    .footer-column h3 {
+      font-size: 18px;
+      margin-bottom: 20px;
+      position: relative;
+      padding-bottom: 10px;
+    }
+
+    .footer-column h3::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 2px;
+      background: var(--moz-yellow);
+    }
+
+    .footer-links {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 10px;
+    }
+
+    .footer-links a {
+      color: #ddd;
+      text-decoration: none;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-links a:hover {
+      color: var(--moz-yellow);
+      transform: translateX(5px);
+    }
+
+    .social-links {
+      display: flex;
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .social-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 50%;
+      color: white;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .social-link:hover {
+      background: var(--moz-yellow);
+      transform: translateY(-3px);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 20px;
+      margin-top: 30px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 14px;
+    }
+
+    /* Responsividade */
+    @media (max-width: 992px) {
+      .footer-content {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .main-news {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      
+      .footer-content {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 576px) {
+      header {
+        font-size: 22px;
+        padding: 15px;
+      }
+      
+      .main-news-title {
+        font-size: 20px;
+      }
+      
+      .section-title {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>PORTAL NOTÍCIAS MOÇAMBIQUE</header>
+
+  <nav>
+    <a href="index.html">Início</a>
+    <a href="politica.html" class="active">Política</a>
+    <a href="economia.html">Economia</a>
+    <a href="desporto.html">Desporto</a>
+    <a href="tecnologia.html">Tecnologia</a>
+    <a href="mundo.html">Mundo</a>
+    <a href="cultura.html">Cultura</a>
+    <a href="saude.html">Saúde</a>
+  </nav>
+
+  <div class="container">
+    <section class="main-news" id="banner">
+      <img id="banner-img" src="https://images.unsplash.com/photo-1580136579312-94651dfd596d?crop=entropy&cs=tinysrgb&fit=max&w=900" alt="Assembleia da República de Moçambique" />
+      <div>
+        <div class="main-news-title" id="banner-title">Presidente moçambicano anuncia reformas políticas para fortalecer a democracia</div>
+        <div class="main-news-text" id="banner-text">O Presidente da República, Filipe Nyusi, anunciou hoje um conjunto de reformas políticas destinadas a fortalecer as instituições democráticas, aumentar a transparência na governação e promover uma maior participação cívica dos cidadãos nos processos de tomada de decisão.</div>
+        <a href="#" class="read-more">Ler mais</a>
+      </div>
+    </section>
+
+    <div class="news-section">
+      <h2 class="section-title">Notícias de Política</h2>
+      <div class="news-grid" id="news-list"></div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-column">
+        <h3>Sobre Nós</h3>
+        <p>O Portal Notícias Moçambique é o seu site de referência para informações atualizadas e confiáveis sobre os mais variados temas em Moçambique.</p>
+        <div class="social-links">
+          <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+      <div class="footer-column">
+        <h3>Links Rápidos</h3>
+        <ul class="footer-links">
+          <li><a href="index.html"><i class="fas fa-chevron-right"></i> Início</a></li>
+          <li><a href="politica.html"><i class="fas fa-chevron-right"></i> Política</a></li>
+          <li><a href="economia.html"><i class="fas fa-chevron-right"></i> Economia</a></li>
+          <li><a href="desporto.html"><i class="fas fa-chevron-right"></i> Desporto</a></li>
+          <li><a href="tecnologia.html"><i class="fas fa-chevron-right"></i> Tecnologia</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h3>Categorias</h3>
+        <ul class="footer-links">
+          <li><a href="mundo.html"><i class="fas fa-chevron-right"></i> Mundo</a></li>
+          <li><a href="cultura.html"><i class="fas fa-chevron-right"></i> Cultura</a></li>
+          <li><a href="saude.html"><i class="fas fa-chevron-right"></i> Saúde</a></li>
+          <li><a href="#"><i class="fas fa-chevron-right"></i> Ciência</a></li>
+          <li><a href="#"><i class="fas fa-chevron-right"></i> Opinião</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h3>Contactos</h3>
+        <ul class="footer-links">
+          <li><a href="#"><i class="fas fa-map-marker-alt"></i> Av. 25 de Setembro, Maputo</a></li>
+          <li><a href="#"><i class="fas fa-phone"></i> +258 84 123 4567</a></li>
+          <li><a href="#"><i class="fas fa-envelope"></i> info@portalnoticiasmz.co.mz</a></li>
+          <li><a href="#"><i class="fas fa-clock"></i> Seg-Sex: 8h-17h</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Portal Notícias Moçambique — Informar é o nosso compromisso</p>
+    </div>
+  </footer>
+
+  <script>
+    const news = [
+      {
+        title: "Assembleia aprova nova lei de combate à corrupção",
+        img: "https://aimnews.org/wp-content/uploads/2025/10/WhatsApp-Image-2025-10-23-at-12.16.05-AM1-1024x678.jpeg",
+        text: "Parlamento moçambicano aprova legislação histórica.",
+        category: "Parlamento",
+        date: "15 Maio 2025"
+      },
+      {
+        title: "Moçambique reforça relações diplomáticas com países vizinhos",
+        img: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?crop=entropy&cs=tinysrgb&fit=max&w=300",
+        text: "Presidente Nyusi realiza visita de Estado à África do Sul.",
+        category: "Política Externa",
+        date: "14 Maio 2025"
+      },
+      {
+        title: "Partidos políticos preparam-se para eleições autárquicas",
+        img: "data:image/webp;base64,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",
+        text: "FRELIMO, RENAMO e MDM iniciam campanhas eleitorais.",
+        category: "Eleições",
+        date: "13 Maio 2025"
+      },
+      {
+        title: "Governo cria comissão para reforma do sector público",
+        img: "data:image/webp;base64,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",
+        text: "Comissão multissetorial vai propor medidas de modernização.",
+        category: "Governo",
+        date: "12 Maio 2025"
+      },
+      {
+        title: "Presidente nomeia novos governadores provinciais",
+        img: "https://rtpafrica.rtp.pt/wp-content/uploads/2025/01/Daniel-Chapo-1-1-810x443.jpg",
+        text: "Mudanças na liderança de cinco províncias moçambicanas.",
+        category: "Governo",
+        date: "11 Maio 2025"
+      },
+      {
+        title: "Parlamento debate orçamento geral do Estado para 2026",
+        img: "https://images.unsplash.com/photo-1593115057322-e94b77572f20?crop=entropy&cs=tinysrgb&fit=max&w=300",
+        text: "Deputados analisam proposta orçamental do Governo.",
+        category: "Parlamento",
+        date: "10 Maio 2025"
+      }
+    ];
+
+    const list = document.getElementById("news-list");
+
+    // Renderizar notícias
+    news.forEach((n) => {
+      const card = document.createElement("div");
+      card.className = "news-card";
+      card.innerHTML = `
+        <div class="category-tag">${n.category}</div>
+        <img src="${n.img}" alt="${n.title}" />
+        <div class="news-card-title">${n.title}</div>
+        <div class="news-card-text">${n.text}</div>
+        <div class="news-card-date"><i class="far fa-clock"></i> ${n.date}</div>
+      `;
+      list.appendChild(card);
+    });
+
+    // Banner com transição
+    const bannerData = [
+      {
+        img: "https://rtpafrica.rtp.pt/wp-content/uploads/2025/01/Daniel-Chapo-1-1-810x443.jpg",
+        title: "Presidente moçambicano anuncia reformas políticas para fortalecer a democracia",
+        text: "O Presidente da República, Daniel Chapo, anunciou hoje um conjunto de reformas políticas destinadas a fortalecer as instituições democráticas, aumentar a transparência na governação e promover uma maior participação cívica dos cidadãos nos processos de tomada de decisão."
+      },
+      {
+        img: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?crop=entropy&cs=tinysrgb&fit=max&w=900",
+        title: "Moçambique reforça relações diplomáticas com países vizinhos",
+        text: "O Presidente Filipe Nyusi realizou uma visita de Estado de três dias à África do Sul, onde se reuniu com o seu homólogo Cyril Ramaphosa para reforçar as relações bilaterais entre os dois países."
+      },
+      {
+        img: "data:image/webp;base64,UklGRpQPAABXRUJQVlA4IIgPAABwWQCdASoRAbQAPp1GnUulo6KqJfTbUUATiUAaRlB7+9R/2nM9GP/+jt+Kx1HfNj5sllEsCxa+4QQc3Kq+ymJ7f411w5re49zmFQ58kIOve6L7sgHWBVnhde7y+y6oKFlQ3fqvi3Kg8zFp1MtsxnNfqBXdGyVtaFudaG1eEEP9C3SAd0byV+nOw8w2cappKXo/YgkO5g57JJFpnVO05teWCqtw2SHe88eZGLJm2ksnd4Pm5BE8XLsdcy/Ch+VbUFPh0gsPUTMCX4pwFK3VHk47lxdZ1TYsfiXwRLLH/vUh8Q5e7KN4P/3jZmc9fwZdSQp5QlnORHvyYm789601DddL5hFqWcm58zvuENPmPi2268k6Ef3aZI1DrGKxnESOLnD4wYyKqdN6UsNI1iMxbtL5VTBTtk6MsGwB2EYn+ekYtpsK9HhFfsj9mtgMiP/ursBrKk0Ipg1u9uO4YrlG+RJzuwNP5QmaAVCYNV/dyHcBRtpjvt8dntxAn6rUQTTJ1QdRWFSWr2rdxD6zVrA3StoxqU0D+05wC1lqfDcxk9Jo9uY/VyL9uyKiHDCIiCxugLcVHJh53irmwMHbjZX+rkRDOiaTykzvdXqsiIh9oxVFQP1JzRRmfCFhjLeLif3+QeFoVJ7wBm/eKRLLyN/aVDLSoVB5vTUHnW0U9VCRtw4PriW6C8z9DNPsWbH+ksGIJudZNg81S7r3Ck1Oj989W/dB9tZSgYHbKFsI0Octxr+M+QPoKyh8EM9CwTRpfZsC1Tz4OIqx7mnY5wteDoqI6SrRc2Cwf5n3cTF8iHh47PNkWq8Q0KTY+iRrCWnbZPpA95IBWrtTPjtUl7b2HR/xp1LLtVy8kg0H6g3P8cYHHdVZORBpov77JQv5us+KRXBaCbhV4g7tYpK8R+NZpc5kwx9EXUfz+f2GKSNfUGHY59nD8+JIHa89aTbEhFRm6kZwqgqjO8AAAP7x6BDKNvmQgMNultj9jz7/8kX6xO1XVU7FTF4PjAD+RtrUjelAV//jxcSPI13GloArxuqrYd8g2+3p9rWhYcUbuuPndtZL5RdvdHHh0pzNEHyj/fj/Vgxg11KM/GeawOIBZM/RQo0nvkOPEMHFGk1sH9c6pMRf0Ux43xnxiFXDVtDlwUsOcLLHmMyTiOLWvGYdNyLV3Dk24lntYTe7UliNCdGW9WEJlwqyvqJ+EfYh/7hc7WGu/1/tCsgz+FHz402pF8V+r7TNW/VtVK+V0RfX/ZCIBwXb5Htekwx8SX53fKg4HBfJhBSo3CQ6rBBTM6Gbk63J1dG+wSFaa4n4AqPpIPnxj8XsdyDDK2vzauMat/NjMX9Z7lMOgjj5F6A2LbU6KEbsT+EOnO/pdVqA4nxnaqmJAamtdGHdLFVvrZ4kSOzeMT4zVanCL0VT51G3pc5lv21ULmUw4lbG3cdtZ5kYrELIifqljHnCZuHuPNbiPWxWwVT+tE7UVMG857m1v3ZmPJhnIXmypYlCy36bKOvWa7j6IIjNv31wieT4qKHrpq0wJRZpqryAlyBsg2c2AccR7d5I/wkJqQCikspMCGe/EXbal2MGid1UvksPignaJOeWw6OSNwLS6/TvNf84fAs5DHUMbeKE+uW5CyGaLAnA9bkcvJyV39hlBijdd+/E9mFJAPAepx59XkPf80h36oqkjSi3XkaiKBJwOtWfukn8Uk4TeZMPsj3TJl7E22Z/1xJC0wiYJJS2r6fK0GFOAFbu/ywQDjgNlNkju3rpIcJZQyFkJM3U1vrYg8i8h23XJsMx5xSZv1wWE6Tl0fftOMP5Oo8exNCXPmn92GuKtIEebGaSVRbM1vtEbPmN6QdAvChBF1Mh5bs3Qfb8savsrpaV148YJLUGsPAIjtzPJ31h609JNsgW3tyJZiNvfxv9svEjrJrvJGqEOXMsqMsMQEWkFkdPPEwtirEUGN+YmHrcerJwux6yllNEY1LN+GNMlFQLqqN0ymltmMNFVg6ZczRQzO5BJPunVWozbszJl6K4scd+kmXOk89vVSyPQHXNPrfUUVWjcjm7Jh713RyJC8FSxQGfpgdyrqh4DULnqs6QNsG8UYDC0u34ovum1LlyvkL2iRCW7K8VpQ8Da7t0LuBvs0JO8LGBd7Q0RVGd2a7xfE7Eo1YtMYrlITzv467s/8ftE7j/pTjpS4tKXBvovYowH8Sx8P5rWS46/M1pI/2E5CdeIGGrwy5JWVYa6PwbGw6cQSuGknmZhXV3QzhNO+Mx7XKJQbK3TxrVZv9bDxT+2vyHEQUBgik965KiaNporjFU0FBvEvHhRJ7ZHjgtBQaq3Z71RJ9w8eJeHMpfGc15aDlJJNx/ilR8BTSRIi4bIhIgm6ErPqwqap0dtUM1p3PPDwDTlvv1E0RWxJ87sfxO/7q28G0Qw+VtS6wWADiRv0s8Knw1RUaJ1jFirQYhOn//T0jIX5tgnIE5TXBPBlbTQJx9SAPV6WkNj0WUt96PoPJrX5MqeMiFO4ME7hREpKSQisM6KqA+TWJoE6EcsllT7uBmEQesSM+3GoB5l5R/CBPaZfyZVbdDRGw0/5naBPTyoCWgTBltLnMWS142vfg1707F2pnQ2+6slWUfh+cDah9s9o6J4Px0KSeXqoGka4j98mqjwLeYbTAArNgou6lw4YIMrTvI7lP0MmZ51ROfmpkbRZJZtDerGFxKDnWKSopd0t8hJDYlFetSvcLymxbmTnpemNXlrnYPyGYhch1ocqoMXD9pGaEEqKPTISBFBEBmH0GoaZ1OQ/7Hf/JdWMiCy5HWZ9NEFS4irAERyWYlGLEELmJEB+zcTG9fRZg9RvWIXaakSUFunI06pMYU2+c80ubo/kNAkuWaURR1pWR/Evxmav5APYj/bk1JLMY5IxGzvYYD87torZX3m1toiyDo3HL9lqMPCPqgtI7RIzJFq+6JQU7k2GXfy0kCEVswiOoH+nbPlqx9PEC+yBFftmFofpb0eJtxcsCpb3ZSojotyprvdqPtW2CMSvfHvsi1NBHl1A5pz3WKXRX3z9LJ5za7OBWNdsWN5hVgwohodDu5rGjBPLVmkkpHPqSR7VmHk5BA85CNl67oSpcjOgPv10nhDTog/ZakswIs69wXecxyD0zvFXXyZrwpWdTreT+M74eBc0EXRbcR1LQ/MckS++kBnXI5SUR6Y0/cnUuK/r3LujY5rQBRDcfB4m8M4wz1lEggilspHIesJmCEBvZKaDyyS/xPLfcL8y33rAvXVKbnOXlhHRqAQFsIqWPGiJpFltfDUmi/EPMHDhgKIet/Y3Ja7YU6vG7IdCfbykOsU1kdaiQbhnLI7DAKmMPnjL+63/YtQee+N4X51m+nRWKZGUBAsV3yoRRcnNKN93iSAzydKMyruc9Yyk8ugrAR/bHZ+Jko+0Bd7ELLqahnCvCoUZ/oozGYwSrCFhmp4s3PGus9Ss+OGasqooIG18E7eFc1l87Be8lxoq2nUPnJVcvk0dsWXSiGQn++LJOWoci9b94mc0NH1fgeTTqR3dt3oOMLMhHUhEHkKq0sx7qAWcNhfB7bflBDCcA/hYbZuGNG8pxeCrFIBrKqk4TI8o8D15o2IExnWRT/ZcMZ6lCI47lzrRDp3gYKWgE7lfeoLT7CqMly+c3X0/LQJ2enTn3gWkYhNq1HvxbKiUZBQrN2F2a9JsmT4o9vmq1uZeGwYz2YHJOwmBCO7OQpmM2YIPAJOdSRv+wluoadVzDnH5SSjqmlBcExhd9hJ0iJIvkxlpwnUV3uaK9MCdamlV/8Bn69LnLh+2QII64ZKHdTz/VA0Zt2S1rXzD1oJJMhQdDaM2zChBmSD/XQSqIq6LWNY2mOrMwtu1FpuNKFhGb6gu9oqE6/Bf4+dhp4sRJy3jViKrUuBSYfJWXu+0j3P2rm2FLBmdi54qN5fDSoN/hUAWI/upMV2AvBqMPOHVp0HG6uBLFb6ieVa/R8TtBkNh2tJfW6FIBCW0E5uWapYkZ9+jKn3xXp/FH0G3rYS2A8wfG3Q6kQgVNZf8X6jF5F/tt0/iAmilKvLKni573FnJUwprQnTCMl4IOWNhGSoAMYWjDrnkK6M2UKGh6T27YU2nRqPShscXOheurQY/MQ3smPH/55jpCg6sFPQurwl5tt/flvwtjelNZCATdJAJV7nLVw+FTDeTVKdjAulnq4pYhqSqUW1/ZqBNmyX+SmSrk9BI7LYcWuy/DP27ybxAM2Iyi0hRaB1XsF9YCr7gDSRLBQyE8hjsOVWAPXFhgoJsGeGSsGMi99M+G705ohOksXhGzEDJWEb//4+U7SNd/JvwrzUNXO1reidkEUh2C8DZtjW8wUrqcOPCmVy/x5r++ueTasgUJQPbnd6jcE0c7aVDgSvT8ERHglV5drGbZCveGGG7vqP5PTzuhkGf6OD67UiKu1U3or0bEyZdVdP6hZi4mvzhIKoLEp5Glbnr0lGLM6CDOJxhOI6BeX+iF3arQlFjqHXuAG0djCEk7+TF4GNnmbatEsIjEgd/MsyuAMbbJ0m/whJhViRy8jtfyZmD/gKAxp+pwIOiax2dtWOPI9NAQim7IilQqVBr768GxSg9jNv0G1BQiY9OC7HA2Eg2VmqW927ZaoQ1121eSjOeBQvwKA3y+VjHFG29TSOPjh4QM+j3+X3b9vKN+YvJjM1gFPO1ApoW2If82kehrYdGdYYMuy6spg5k+cMIiGQZjj9XBY1EbX5SfBMa30vm40ctwBOHVThBRJO7xK6Y1yyE7eowjWAiOoz9mzZiBLKXneOoxRJ+6G5P6fudOR8iJeo5EmC/eTcY8OKX5u+cjofdjNNKtY16Ah7fJR92iWQrdOZjXL7DDXuhFue16/UuTiIMA+UimIrGaO/gFo0HNLb9WJC/SWVPFfJ4uNXQ0qqqCArkGQjdfDM2F8MudCThkKg6JDZ58BE6VCdebqpvWuJUDdw8456nr1sHmOw/SBklNnVCs5ubzIgFEY/ZuH8PfvAwCsuw7pK4Wgpj1IexAjMsKDntQDtjX6heKWIv5SdgGdVgzZWfu4ObQ1twCnjAFzUkWBrHhsLw48nkqa2FDEB/EmP/tkxeaicgsIGf/hwAJDf004AAA7Hpvfz3rgvMdrNpP78NdKLX5ecxTsnd7LjkXMnNlW1dxqPzmWOrpYwdtvanL+klWJKACQMqGhapGtlQABO928t1OrOfY0TWBXNTwbys0Q6M0LY2rplv6IoIDO+SaaC9KD3jj6cjua4Q//psKZgBB/8fqQq8o0hdYvsCE4/JPeRJggGK/DrCLW/TqqoAcLspLdJtfQokRAAAAA",
+        title: "Partidos políticos preparam-se para eleições autárquicas",
+        text: "Os principais partidos políticos moçambicanos iniciaram os preparativos para as próximas eleições autárquicas, marcadas para Outubro."
+      }
+    ];
+
+    let bannerIndex = 0;
+    const bannerImg = document.getElementById("banner-img");
+    const bannerTitle = document.getElementById("banner-title");
+    const bannerText = document.getElementById("banner-text");
+
+    function changeBanner() {
+      bannerIndex = (bannerIndex + 1) % bannerData.length;
+      bannerImg.style.opacity = 0;
+      bannerTitle.style.opacity = 0;
+      bannerText.style.opacity = 0;
+      setTimeout(() => {
+        bannerImg.src = bannerData[bannerIndex].img;
+        bannerTitle.textContent = bannerData[bannerIndex].title;
+        bannerText.textContent = bannerData[bannerIndex].text;
+        bannerImg.style.opacity = 1;
+        bannerTitle.style.opacity = 1;
+        bannerText.style.opacity = 1;
+      }, 500);
+    }
+    setInterval(changeBanner, 5000);
+  </script>
+</body>
+</html>

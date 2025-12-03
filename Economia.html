@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portal Notícias Moçambique | Economia</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --moz-color: #009639;
+      --moz-yellow: #F7D038;
+      --moz-red: #D21034;
+      --light-color: #eef1f5;
+      --dark-color: #222;
+      --text-color: #333;
+      --gray-color: #555;
+      --white: #fff;
+      --shadow: 0 3px 6px rgba(0,0,0,0.1);
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--light-color);
+      color: var(--text-color);
+      line-height: 1.6;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--moz-color), var(--moz-yellow), var(--moz-red));
+      color: var(--white);
+      padding: 18px;
+      text-align: center;
+      font-size: 28px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: var(--moz-color);
+    }
+
+    nav {
+      background: var(--white);
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 12px;
+      border-bottom: 1px solid #ccc;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--moz-color);
+      font-weight: bold;
+      padding: 6px 10px;
+      border-radius: 4px;
+      transition: var(--transition);
+    }
+
+    nav a:hover, nav a.active {
+      background: var(--moz-color);
+      color: var(--white);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 25px auto;
+      padding: 0 15px;
+    }
+
+    /* Banner Automático */
+    .banner-container {
+      width: 100%;
+      height: 400px;
+      position: relative;
+      overflow: hidden;
+      margin: 30px 0;
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .banner-slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: flex-end;
+      padding: 30px;
+    }
+
+    .banner-slide.active {
+      opacity: 1;
+    }
+
+    .banner-content {
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 70%;
+    }
+
+    .banner-content h2 {
+      margin-bottom: 10px;
+      font-size: 1.8rem;
+    }
+
+    .banner-content p {
+      font-size: 1rem;
+      margin-bottom: 15px;
+    }
+
+    .banner-btn {
+      display: inline-block;
+      background: var(--moz-color);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: var(--transition);
+    }
+
+    .banner-btn:hover {
+      background: var(--moz-red);
+      transform: translateY(-2px);
+    }
+
+    .banner-indicators {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+    }
+
+    .indicator {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.5);
+      margin: 0 5px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .indicator.active {
+      background: white;
+    }
+
+    /* Seção de notícias econômicas */
+    .economia-section {
+      margin-bottom: 50px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--moz-color);
+    }
+
+    .section-title {
+      font-size: 1.8rem;
+      color: var(--dark-color);
+    }
+
+    .ver-mais {
+      color: var(--moz-color);
+      text-decoration: none;
+      font-weight: bold;
+      transition: var(--transition);
+    }
+
+    .ver-mais:hover {
+      color: var(--moz-red);
+    }
+
+    .noticias-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 25px;
+    }
+
+    .noticia-card {
+      background: var(--white);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+    }
+
+    .noticia-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    .noticia-img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      transition: var(--transition);
+    }
+
+    .noticia-card:hover .noticia-img {
+      transform: scale(1.05);
+    }
+
+    .noticia-content {
+      padding: 20px;
+    }
+
+    .noticia-categoria {
+      display: inline-block;
+      background: var(--moz-color);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      margin-bottom: 10px;
+    }
+
+    .noticia-titulo {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+      color: var(--dark-color);
+    }
+
+    .noticia-resumo {
+      color: var(--gray-color);
+      margin-bottom: 15px;
+      font-size: 0.95rem;
+    }
+
+    .noticia-data {
+      color: #999;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* Indicadores Econômicos */
+    .indicadores-economicos {
+      background: var(--white);
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      margin-bottom: 40px;
+    }
+
+    .indicadores-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .indicador-item {
+      text-align: center;
+      padding: 15px;
+      border-radius: 8px;
+      background: var(--light-color);
+      transition: var(--transition);
+    }
+
+    .indicador-item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .indicador-valor {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: var(--moz-color);
+      margin: 10px 0;
+    }
+
+    .indicador-nome {
+      font-size: 0.9rem;
+      color: var(--gray-color);
+    }
+
+    .indicador-variacao {
+      font-size: 0.85rem;
+      margin-top: 5px;
+    }
+
+    .positivo {
+      color: var(--moz-color);
+    }
+
+    .negativo {
+      color: var(--moz-red);
+    }
+
+    /* Footer */
+    footer {
+      background: linear-gradient(135deg, var(--moz-color), var(--moz-yellow), var(--moz-red));
+      color: white;
+      padding: 40px 0 20px;
+      margin-top: 50px;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 15px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 30px;
+    }
+
+    .footer-column h3 {
+      font-size: 18px;
+      margin-bottom: 20px;
+      position: relative;
+      padding-bottom: 10px;
+    }
+
+    .footer-column h3::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 2px;
+      background: var(--moz-yellow);
+    }
+
+    .footer-links {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 10px;
+    }
+
+    .footer-links a {
+      color: #ddd;
+      text-decoration: none;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-links a:hover {
+      color: var(--moz-yellow);
+      transform: translateX(5px);
+    }
+
+    .social-links {
+      display: flex;
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .social-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 50%;
+      color: white;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .social-link:hover {
+      background: var(--moz-yellow);
+      transform: translateY(-3px);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 20px;
+      margin-top: 30px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 14px;
+    }
+
+    /* Responsividade */
+    @media (max-width: 992px) {
+      .footer-content {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .banner-content {
+        max-width: 85%;
+      }
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      
+      .footer-content {
+        grid-template-columns: 1fr;
+      }
+      
+      .banner-container {
+        height: 300px;
+      }
+      
+      .banner-content {
+        max-width: 90%;
+        padding: 15px;
+      }
+      
+      .banner-content h2 {
+        font-size: 1.4rem;
+      }
+      
+      .noticias-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      header {
+        font-size: 22px;
+        padding: 15px;
+      }
+      
+      .section-title {
+        font-size: 1.5rem;
+      }
+      
+      .indicadores-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>PORTAL NOTÍCIAS MOÇAMBIQUE</header>
+
+  <nav>
+    <a href="index.html">Início</a>
+    <a href="politica.html">Política</a>
+    <a href="economia.html" class="active">Economia</a>
+    <a href="desporto.html">Desporto</a>
+    <a href="tecnologia.html">Tecnologia</a>
+    <a href="mundo.html">Mundo</a>
+    <a href="cultura.html">Cultura</a>
+    <a href="saude.html">Saúde</a>
+  </nav>
+
+  <!-- Banner Automático -->
+  <div class="container">
+    <div class="banner-container">
+      <div class="banner-slide active" style="background-image: url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?crop=entropy&cs=tinysrgb&fit=max&w=1200')">
+        <div class="banner-content">
+          <h2>Banco de Moçambique mantém taxa de juro em 17,25%</h2>
+          <p>O Comité de Política Monetária do Banco de Moçambique decidiu manter a taxa de juro de política monetária em 17,25%, visando a estabilidade dos preços.</p>
+          <a href="#" class="banner-btn">Ler mais</a>
+        </div>
+      </div>
+      <div class="banner-slide" style="background-image: url('https://images.unsplash.com/photo-1554224155-6726b3ff858f?crop=entropy&cs=tinysrgb&fit=max&w=1200')">
+        <div class="banner-content">
+          <h2>Projecto de Gás Natural em Cabo Delgado atrai investimentos recorde</h2>
+          <p>Os investimentos no projecto de Gás Natural Liquefeito na região do Cabo Delgado já ultrapassaram os 30 mil milhões de dólares, o maior investimento privado na história de Moçambique.</p>
+          <a href="#" class="banner-btn">Ler mais</a>
+        </div>
+      </div>
+      <div class="banner-slide" style="background-image: url('https://images.unsplash.com/photo-1560472354-b33ff0c44a43?crop=entropy&cs=tinysrgb&fit=max&w=1200')">
+        <div class="banner-content">
+          <h2>Exportações de produtos agrícolas crescem 12% no primeiro semestre</h2>
+          <p>As exportações de produtos agrícolas moçambicanos registaram um crescimento de 12% no primeiro semestre de 2023, impulsionadas pelo aumento da produção de algodão, tabaco e cajú.</p>
+          <a href="#" class="banner-btn">Ler mais</a>
+        </div>
+      </div>
+      <div class="banner-indicators">
+        <div class="indicator active" data-slide="0"></div>
+        <div class="indicator" data-slide="1"></div>
+        <div class="indicator" data-slide="2"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Indicadores Econômicos -->
+  <div class="container">
+    <div class="indicadores-economicos">
+      <h2 class="section-title">Indicadores Econômicos</h2>
+      <div class="indicadores-grid">
+        <div class="indicador-item">
+          <i class="fas fa-money-bill-wave fa-2x" style="color: var(--moz-color);"></i>
+          <div class="indicador-valor">75,5 MZN</div>
+          <div class="indicador-nome">Câmbio USD/MZN</div>
+          <div class="indicador-variacao positivo"><i class="fas fa-arrow-up"></i> 0.3%</div>
+        </div>
+        <div class="indicador-item">
+          <i class="fas fa-chart-line fa-2x" style="color: var(--moz-color);"></i>
+          <div class="indicador-valor">4.2%</div>
+          <div class="indicador-nome">Crescimento do PIB</div>
+          <div class="indicador-variacao positivo"><i class="fas fa-arrow-up"></i> 0.5%</div>
+        </div>
+        <div class="indicador-item">
+          <i class="fas fa-shopping-cart fa-2x" style="color: var(--moz-color);"></i>
+          <div class="indicador-valor">5.8%</div>
+          <div class="indicador-nome">Inflação Anual</div>
+          <div class="indicador-variacao negativo"><i class="fas fa-arrow-down"></i> 0.2%</div>
+        </div>
+        <div class="indicador-item">
+          <i class="fas fa-industry fa-2x" style="color: var(--moz-color);"></i>
+          <div class="indicador-valor">12.4%</div>
+          <div class="indicador-nome">Taxa de Desemprego</div>
+          <div class="indicador-variacao negativo"><i class="fas fa-arrow-up"></i> 0.1%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notícias de Economia -->
+  <div class="container">
+    <section class="economia-section">
+      <div class="section-header">
+        <h2 class="section-title">Notícias de Economia</h2>
+        <a href="#" class="ver-mais">Ver todas →</a>
+      </div>
+      
+      <div class="noticias-grid">
+        <article class="noticia-card">
+          <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?crop=entropy&cs=tinysrgb&fit=max&w=600" alt="Banco de Moçambique" class="noticia-img">
+          <div class="noticia-content">
+            <span class="noticia-categoria">Banca</span>
+            <h3 class="noticia-titulo">Banco de Moçambique mantém taxa de juro em 17,25%</h3>
+            <p class="noticia-resumo">O Comité de Política Monetária do Banco de Moçambique decidiu manter a taxa de juro de política monetária em 17,25%, numa altura em que a inflação mostra sinais de desaceleração.</p>
+            <span class="noticia-data"><i class="far fa-clock"></i> 15 de Outubro, 2023</span>
+          </div>
+        </article>
+        
+        <article class="noticia-card">
+          <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?crop=entropy&cs=tinysrgb&fit=max&w=600" alt="Gás Natural" class="noticia-img">
+          <div class="noticia-content">
+            <span class="noticia-categoria">Energia</span>
+            <h3 class="noticia-titulo">Projecto de Gás Natural em Cabo Delgado atrai investimentos recorde</h3>
+            <p class="noticia-resumo">Os investimentos no projecto de Gás Natural Liquefeito na região do Cabo Delgado já ultrapassaram os 30 mil milhões de dólares, o maior investimento privado na história de Moçambique.</p>
+            <span class="noticia-data"><i class="far fa-clock"></i> 14 de Outubro, 2023</span>
+          </div>
+        </article>
+        
+        <article class="noticia-card">
+          <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?crop=entropy&cs=tinysrgb&fit=max&w=600" alt="Exportações Agrícolas" class="noticia-img">
+          <div class="noticia-content">
+            <span class="noticia-categoria">Agricultura</span>
+            <h3 class="noticia-titulo">Exportações de produtos agrícolas crescem 12% no primeiro semestre</h3>
+            <p class="noticia-resumo">As exportações de produtos agrícolas moçambicanos registaram um crescimento de 12% no primeiro semestre de 2023, impulsionadas pelo aumento da produção de algodão, tabaco e cajú.</p>
+            <span class="noticia-data"><i class="far fa-clock"></i> 13 de Outubro, 2023</span>
+          </div>
+        </article>
+        
+        <article class="noticia-card">
+          <img src="data:image/webp;base64,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" alt="Turismo" class="noticia-img">
+          <div class="noticia-content">
+            <span class="noticia-categoria">Turismo</span>
+            <h3 class="noticia-titulo">Sector do turismo recupera com aumento de 28% nas chegadas internacionais</h3>
+            <p class="noticia-resumo">O sector do turismo em Moçambique registou um crescimento de 28% nas chegadas de turistas internacionais no terceiro trimestre, aproximando-se dos níveis pré-pandemia.</p>
+            <span class="noticia-data"><i class="far fa-clock"></i> 12 de Outubro, 2023</span>
+          </div>
+        </article>
+        
+        <article class="noticia-card">
+          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?crop=entropy&cs=tinysrgb&fit=max&w=600" alt="Infraestruturas" class="noticia-img">
+          <div class="noticia-content">
+            <span class="noticia-categoria">Infraestruturas</span>
+            <h3 class="noticia-titulo">Governo anuncia investimento de 500 milhões de dólares em infraestruturas rodoviárias</h3>
+            <p class="noticia-resumo">O Governo moçambicano anunciou um pacote de investimentos de 500 milhões de dólares para a reabilitação e construção de estradas em várias províncias do país.</p>
+            <span class="noticia-data"><i class="far fa-clock"></i> 11 de Outubro, 2023</span>
+          </div>
+        </article>
+        
+        <article class="noticia-card">
+          <img src="data:image/webp;base64,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" alt="Tecnologia" class="noticia-img">
+          <div class="noticia-content">
+            <span class="noticia-categoria">Tecnologia</span>
+            <h3 class="noticia-titulo">Sector das tecnologias financeiras cresce 45% em Moçambique</h3>
+            <p class="noticia-resumo">O sector das tecnologias financeiras (fintech) em Moçambique registou um crescimento de 45% no último ano, com destaque para o aumento de soluções de pagamento móvel.</p>
+            <span class="noticia-data"><i class="far fa-clock"></i> 10 de Outubro, 2023</span>
+          </div>
+        </article>
+      </div>
+    </section>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-column">
+          <h3>Sobre Nós</h3>
+          <div class="footer-about">
+            <p>Portal de notícias de Moçambique com cobertura imparcial e aprofundada dos principais acontecimentos do cenário político, económico e social do país.</p>
+            <div class="social-links">
+          <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+          
+          </div>
+        </div>
+        
+        <div class="footer-column">
+          <h3>Links Rápidos</h3>
+          <ul class="footer-links">
+            <li><a href="index.html"><i class="fas fa-chevron-right"></i> Início</a></li>
+            <li><a href="politica.html"><i class="fas fa-chevron-right"></i> Política</a></li>
+            <li><a href="economia.html"><i class="fas fa-chevron-right"></i> Economia</a></li>
+            <li><a href="desporto.html"><i class="fas fa-chevron-right"></i> Desporto</a></li>
+            <li><a href="tecnologia.html"><i class="fas fa-chevron-right"></i> Tecnologia</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-column">
+          <h3>Categorias</h3>
+          <ul class="footer-links">
+            <li><a href="#"><i class="fas fa-chevron-right"></i> Banca & Finanças</a></li>
+            <li><a href="#"><i class="fas fa-chevron-right"></i> Energia & Minas</a></li>
+            <li><a href="#"><i class="fas fa-chevron-right"></i> Agricultura</a></li>
+            <li><a href="#"><i class="fas fa-chevron-right"></i> Turismo</a></li>
+            <li><a href="#"><i class="fas fa-chevron-right"></i> Infraestruturas</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-column">
+          <h3>Contato</h3>
+          <ul class="footer-links">
+            <li><a href="mailto:contato@portalnoticiasmz.com"><i class="fas fa-envelope"></i> contato@portalnoticiasmz.com</a></li>
+            <li><a href="tel:+258841234567"><i class="fas fa-phone"></i> +258 84 123 4567</a></li>
+            <li><a href="#"><i class="fas fa-map-marker-alt"></i> Av. 25 de Setembro, Maputo</a></li>
+            <li><a href="#"><i class="fas fa-clock"></i> Seg-Sex: 8h-17h</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2023 Portal Notícias Moçambique. Todos os direitos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Script para o banner automático
+    document.addEventListener('DOMContentLoaded', function() {
+      const slides = document.querySelectorAll('.banner-slide');
+      const indicators = document.querySelectorAll('.indicator');
+      let currentSlide = 0;
+      const slideInterval = 5000; // 5 segundos
+      
+      function showSlide(index) {
+        // Remove a classe 'active' de todos os slides e indicadores
+        slides.forEach(slide => slide.classList.remove('active'));
+        indicators.forEach(indicator => indicator.classList.remove('active'));
+        
+        // Adiciona a classe 'active' ao slide e indicador atual
+        slides[index].classList.add('active');
+        indicators[index].classList.add('active');
+        currentSlide = index;
+      }
+      
+      function nextSlide() {
+        let next = currentSlide + 1;
+        if (next >= slides.length) next = 0;
+        showSlide(next);
+      }
+      
+      // Configura o intervalo para troca automática
+      let slideTimer = setInterval(nextSlide, slideInterval);
+      
+      // Adiciona eventos de clique aos indicadores
+      indicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', function() {
+          clearInterval(slideTimer);
+          showSlide(index);
+          slideTimer = setInterval(nextSlide, slideInterval);
+        });
+      });
+      
+      // Pausa a rotação automática quando o mouse está sobre o banner
+      const bannerContainer = document.querySelector('.banner-container');
+      bannerContainer.addEventListener('mouseenter', function() {
+        clearInterval(slideTimer);
+      });
+      
+      bannerContainer.addEventListener('mouseleave', function() {
+        slideTimer = setInterval(nextSlide, slideInterval);
+      });
+    });
+  </script>
+</body>
+</html>

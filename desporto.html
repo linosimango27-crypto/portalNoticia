@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Desporto | Portal Notícias Moçambique</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #0a3d62;
+      --secondary-color: #1e5f8a;
+      --accent-color: #3498db;
+      --moz-color: #009639;
+      --moz-yellow: #F7D038;
+      --moz-red: #D21034;
+      --light-color: #eef1f5;
+      --dark-color: #222;
+      --text-color: #333;
+      --gray-color: #555;
+      --white: #fff;
+      --shadow: 0 3px 6px rgba(0,0,0,0.1);
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--light-color);
+      color: var(--text-color);
+      line-height: 1.6;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--moz-color), var(--moz-yellow), var(--moz-red));
+      color: var(--white);
+      padding: 18px;
+      text-align: center;
+      font-size: 28px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: var(--moz-color);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 25px auto;
+      padding: 0 15px;
+    }
+
+    /* Banner automático */
+    .banner-container {
+      width: 100%;
+      height: 400px;
+      position: relative;
+      overflow: hidden;
+      margin: 30px 0;
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+    
+    .banner-slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: flex-end;
+      padding: 30px;
+    }
+    
+    .banner-slide.active {
+      opacity: 1;
+    }
+    
+    .banner-content {
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 70%;
+    }
+    
+    .banner-content h2 {
+      margin-bottom: 10px;
+      font-size: 1.8rem;
+    }
+    
+    .banner-content p {
+      font-size: 1rem;
+      margin-bottom: 15px;
+    }
+    
+    .banner-btn {
+      display: inline-block;
+      background: var(--moz-color);
+      color: var(--white);
+      padding: 8px 15px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: var(--transition);
+    }
+    
+    .banner-btn:hover {
+      background: var(--moz-red);
+      transform: translateY(-2px);
+    }
+    
+    .banner-indicators {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+    }
+    
+    .indicator {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.5);
+      margin: 0 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    
+    .indicator.active {
+      background: white;
+    }
+
+    /* Seção de notícias de desporto */
+    .desporto-section {
+      margin-bottom: 50px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--moz-color);
+    }
+
+    .section-title {
+      font-size: 1.8rem;
+      color: var(--dark-color);
+    }
+
+    .ver-mais {
+      color: var(--moz-color);
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .noticias-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 25px;
+    }
+
+    .noticia-card {
+      background: var(--white);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+      cursor: pointer;
+      position: relative;
+    }
+
+    .noticia-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+    }
+
+    .noticia-img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      transition: var(--transition);
+    }
+
+    .noticia-card:hover .noticia-img {
+      transform: scale(1.05);
+    }
+
+    .noticia-content {
+      padding: 20px;
+    }
+
+    .noticia-categoria {
+      display: inline-block;
+      background: var(--moz-color);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      margin-bottom: 10px;
+    }
+
+    .noticia-titulo {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+      color: var(--dark-color);
+    }
+
+    .noticia-resumo {
+      color: var(--gray-color);
+      margin-bottom: 15px;
+      font-size: 0.95rem;
+    }
+
+    .noticia-data {
+      color: #888;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* Footer */
+    footer {
+      background: linear-gradient(135deg, var(--moz-color), var(--moz-yellow), var(--moz-red));
+      color: white;
+      padding: 40px 0 20px;
+      margin-top: 50px;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 15px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 30px;
+    }
+
+    .footer-column h3 {
+      font-size: 18px;
+      margin-bottom: 20px;
+      position: relative;
+      padding-bottom: 10px;
+    }
+
+    .footer-column h3::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 2px;
+      background: var(--moz-yellow);
+    }
+
+    .footer-links {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 10px;
+    }
+
+    .footer-links a {
+      color: #ddd;
+      text-decoration: none;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-links a:hover {
+      color: var(--moz-yellow);
+      transform: translateX(5px);
+    }
+
+    .social-links {
+      display: flex;
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .social-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 50%;
+      color: white;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .social-link:hover {
+      background: var(--moz-yellow);
+      transform: translateY(-3px);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 20px;
+      margin-top: 30px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 14px;
+    }
+
+    /* Modal */
+    .modal-bg {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      visibility: hidden;
+      opacity: 0;
+      transition: 0.3s;
+      z-index: 100;
+    }
+
+    .modal-bg.active {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .modal-box {
+      background: white;
+      width: 90%;
+      max-width: 700px;
+      max-height: 90vh;
+      padding: 25px;
+      border-radius: 8px;
+      overflow-y: auto;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+    }
+
+    .modal-box img {
+      width: 100%;
+      border-radius: 6px;
+      margin-bottom: 15px;
+    }
+
+    .modal-title {
+      font-size: 24px;
+      margin-bottom: 15px;
+      color: var(--dark-color);
+    }
+
+    .modal-content {
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    .modal-meta {
+      display: flex;
+      justify-content: space-between;
+      color: #888;
+      font-size: 14px;
+      margin-bottom: 15px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .close-btn {
+      background: var(--moz-color);
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .close-btn:hover {
+      background: var(--moz-red);
+    }
+
+    /* Responsividade */
+    @media (max-width: 992px) {
+      .footer-content {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .footer-content {
+        grid-template-columns: 1fr;
+      }
+      
+      .banner-container {
+        height: 300px;
+      }
+      
+      .banner-content {
+        max-width: 90%;
+        padding: 15px;
+      }
+      
+      .banner-content h2 {
+        font-size: 1.4rem;
+      }
+      
+      .noticias-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 576px) {
+      header {
+        font-size: 22px;
+        padding: 15px;
+      }
+      
+      .section-title {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>PORTAL NOTÍCIAS MOÇAMBIQUE</header>
+
+  <!-- Banner Automático -->
+  <div class="container">
+    <div class="banner-container">
+      <div class="banner-slide active" style="background-image: url('https://esfericomoz.com/wp-content/uploads/2023/06/WhatsApp-Image-2023-06-28-at-16.42.49.jpeg')">
+        <div class="banner-content">
+          <h2>Seleção moçambicana vence jogo decisivo e garante vaga na próxima competição</h2>
+          <p>Com um golo no último minuto, a seleção moçambicana garantiu a vitória sobre a rival histórica, garantindo vaga na próxima competição internacional.</p>
+          <a href="#" class="banner-btn">Ler mais</a>
+        </div>
+      </div>
+      <div class="banner-slide" style="background-image: url('https://tvm.co.mz/images/basquetbol_campea.jpg')">
+        <div class="banner-content">
+          <h2>Clube de Maputo sagra-se campeão nacional de basquetebol</h2>
+          <p>Equipa vence final emocionante por apenas dois pontos no Pavilhão do Maxaquene.</p>
+          <a href="#" class="banner-btn">Ler mais</a>
+        </div>
+      </div>
+      <div class="banner-slide" style="background-image: url('https://lance.co.mz/public/images/1764143583-LIGA_MOZAL_2025.jpg')">
+        <div class="banner-content">
+          <h2>Atleta moçambicano conquista medalha de ouro em competição africana</h2>
+          <p>Carlos Muianga vence prova de 400 metros barreiras e estabelece novo recorde pessoal.</p>
+          <a href="#" class="banner-btn">Ler mais</a>
+        </div>
+      </div>
+      <div class="banner-indicators">
+        <div class="indicator active" data-slide="0"></div>
+        <div class="indicator" data-slide="1"></div>
+        <div class="indicator" data-slide="2"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notícias de Desporto -->
+  <div class="container">
+    <section class="desporto-section">
+      <div class="section-header">
+        <h2 class="section-title">Notícias de Desporto</h2>
+        <a href="#" class="ver-mais">Ver todas →</a>
+      </div>
+      
+      <div class="noticias-grid" id="news-list">
+        <!-- As notícias serão carregadas aqui via JavaScript -->
+      </div>
+    </section>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-column">
+        <h3>Sobre Nós</h3>
+        <p>O Portal Notícias Moçambique é o seu site de referência para informações atualizadas e confiáveis sobre os mais variados temas em Moçambique.</p>
+        <div class="social-links">
+          <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+      <div class="footer-column">
+        <h3>Links Rápidos</h3>
+        <ul class="footer-links">
+          <li><a href="index.html"><i class="fas fa-chevron-right"></i> Início</a></li>
+          <li><a href="politica.html"><i class="fas fa-chevron-right"></i> Política</a></li>
+          <li><a href="economia.html"><i class="fas fa-chevron-right"></i> Economia</a></li>
+          <li><a href="desporto.html"><i class="fas fa-chevron-right"></i> Desporto</a></li>
+          <li><a href="tecnologia.html"><i class="fas fa-chevron-right"></i> Tecnologia</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h3>Categorias</h3>
+        <ul class="footer-links">
+          <li><a href="mundo.html"><i class="fas fa-chevron-right"></i> Mundo</a></li>
+          <li><a href="cultura.html"><i class="fas fa-chevron-right"></i> Cultura</a></li>
+          <li><a href="saude.html"><i class="fas fa-chevron-right"></i> Saúde</a></li>
+          <li><a href="#"><i class="fas fa-chevron-right"></i> Ciência</a></li>
+          <li><a href="#"><i class="fas fa-chevron-right"></i> Opinião</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h3>Contactos</h3>
+        <ul class="footer-links">
+          <li><a href="#"><i class="fas fa-map-marker-alt"></i> Av. 25 de Setembro, Maputo</a></li>
+          <li><a href="#"><i class="fas fa-phone"></i> +258 84 123 4567</a></li>
+          <li><a href="#"><i class="fas fa-envelope"></i> info@portalnoticiasmz.co.mz</a></li>
+          <li><a href="#"><i class="fas fa-clock"></i> Seg-Sex: 8h-17h</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Portal Notícias Moçambique — Informar é o nosso compromisso</p>
+    </div>
+  </footer>
+
+  <!-- Modal para notícias completas -->
+  <div class="modal-bg" id="modal-bg">
+    <div class="modal-box" id="modal-box"></div>
+  </div>
+
+  <script>
+    // Dados das notícias de desporto
+    const news = [
+      {
+        title: "Seleção moçambicana vence jogo decisivo",
+        img: "https://esfericomoz.com/wp-content/uploads/2023/06/WhatsApp-Image-2023-06-28-at-16.42.49.jpeg",
+        text: "Um golo no último minuto garante classificação.",
+        full: "Com um golo no último minuto, a seleção moçambicana garantiu a vitória sobre a rival histórica, garantindo vaga na próxima competição internacional. A equipe técnica destacou o desempenho coletivo e a preparação física dos atletas. A torcida celebrou nas ruas, mostrando apoio e entusiasmo pelo sucesso da seleção. O treinador afirmou que esta vitória é resultado de meses de trabalho árduo e dedicação da equipa.",
+        category: "Futebol",
+        date: "15 Maio 2025"
+      },
+      {
+        title: "Clube de Maputo sagra-se campeão nacional de basquetebol",
+        img: "https://images.unsplash.com/photo-1546519638-68e109498ffc?crop=entropy&cs=tinysrgb&fit=max&w=300",
+        text: "Equipa vence final emocionante por apenas dois pontos.",
+        full: "O Clube de Maputo sagrou-se campeão nacional de basquetebol após uma final emocionante que terminou com uma diferença de apenas dois pontos. A partida, disputada no Pavilhão do Maxaquene, contou com mais de 5.000 espectadores que vibraram com as jogadas das duas equipas. O MVP da final foi o jogador moçambicano João Muchanga, que marcou 28 pontos e fez 10 assistências.",
+        category: "Basquetebol",
+        date: "14 Maio 2025"
+      },
+      {
+        title: "Atleta moçambicano conquista medalha de ouro em competição africana",
+        img: "https://lance.co.mz/public/images/1764143583-LIGA_MOZAL_2025.jpg",
+        text: "Carlos Muianga vence prova de 400 metros barreiras.",
+        full: "O atleta moçambicano Carlos Muianga conquistou a medalha de ouro na prova de 400 metros barreiras no Campeonato Africano de Atletismo, realizado no Cairo, Egito. Muianga estabeleceu um novo recorde pessoal e garantiu a qualificação para os próximos Jogos Olímpicos. Esta é a primeira medalha de ouro de Moçambique nesta competição desde 2011.",
+        category: "Atletismo",
+        date: "13 Setembro 2025"
+      },
+      {
+        title: "Federação anuncia novo plano de desenvolvimento do desporto nacional",
+        img: "https://noticias.mmo.co.mz/wp-content/uploads/2025/10/Novos-estatutos-da-Federacao-Mocambicana-de-Futebol-autorizam-tres-mandatos-para-o-presidente.jpg",
+        text: "Investimento de 50 milhões de meticais para formação.",
+        full: "A Federação Moçambicana de Desporto anunciou um novo plano de desenvolvimento que prevê um investimento de 50 milhões de meticais na formação de atletas e técnicos desportivos. O plano, que será implementado nos próximos quatro anos, inclui a construção de novos centros de formação, a contratação de técnicos estrangeiros e a realização de competições escolares em todo o país.",
+        category: "Outros",
+        date: "12 Novembro 2025"
+      },
+      {
+        title: "Moçambique vai acolher campeonato africano de andebol em 2026",
+        img: "https://th.bing.com/th/id/OIP.z4_uE_DBuRfWzAi5ltU7gAHaEt?w=243&h=180&c=7&r=0&o=7&pid=1.7&rm=3",
+        text: "Competição continental terá lugar em Maputo e Matola.",
+        full: "Moçambique foi escolhido para acolher o Campeonato Africano de Andebol de 2026, que terá lugar nas cidades de Maputo e Matola. Esta será a primeira vez que o país organiza uma competição continental de andebol. As autoridades desportivas já iniciaram os preparativos para o evento, que contará com a participação de 16 seleções africanas.",
+        category: "Andebol",
+        date: "11 Outubro 2025"
+      },
+      {
+        title: "Seleção feminina de futebol inicia preparação para eliminatórias",
+        img: "https://images.unsplash.com/photo-1599058917765-a780eda07a3e?crop=entropy&cs=tinysrgb&fit=max&w=300",
+        text: "Equipa concentra-se em Maputo para treinos intensivos.",
+        full: "A seleção feminina de futebol de Moçambique iniciou esta semana uma concentração em Maputo para preparar as eliminatórias do Campeonato Africano de Nações. As atletas estão a realizar treinos intensivos sob a orientação do novo selecionador, que prometeu dar oportunidades a jovens talentos. A primeira partida está marcada para o próximo mês contra a seleção da Tanzânia.",
+        category: "Futebol",
+        date: "10 Maio 2025"
+      }
+    ];
+
+    // Elementos do DOM
+    const list = document.getElementById("news-list");
+    const modalBg = document.getElementById("modal-bg");
+    const modalBox = document.getElementById("modal-box");
+
+    // Renderizar notícias
+    news.forEach((n, index) => {
+      const card = document.createElement("div");
+      card.className = "noticia-card";
+      card.innerHTML = `
+        <img src="${n.img}" alt="${n.title}" class="noticia-img" />
+        <div class="noticia-content">
+          <span class="noticia-categoria">${n.category}</span>
+          <h3 class="noticia-titulo">${n.title}</h3>
+          <p class="noticia-resumo">${n.text}</p>
+          <div class="noticia-data"><i class="far fa-clock"></i> ${n.date}</div>
+        </div>
+      `;
+      card.onclick = () => openModal(n);
+      list.appendChild(card);
+    });
+
+    // Script para o banner automático
+    document.addEventListener('DOMContentLoaded', function() {
+      const slides = document.querySelectorAll('.banner-slide');
+      const indicators = document.querySelectorAll('.indicator');
+      let currentSlide = 0;
+      const slideInterval = 5000; // 5 segundos
+      
+      function showSlide(index) {
+        // Remove a classe 'active' de todos os slides e indicadores
+        slides.forEach(slide => slide.classList.remove('active'));
+        indicators.forEach(indicator => indicator.classList.remove('active'));
+        
+        // Adiciona a classe 'active' ao slide e indicador atual
+        slides[index].classList.add('active');
+        indicators[index].classList.add('active');
+        currentSlide = index;
+      }
+      
+      function nextSlide() {
+        let next = currentSlide + 1;
+        if (next >= slides.length) next = 0;
+        showSlide(next);
+      }
+      
+      // Configura o intervalo para troca automática
+      let slideTimer = setInterval(nextSlide, slideInterval);
+      
+      // Adiciona eventos de clique aos indicadores
+      indicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', function() {
+          clearInterval(slideTimer);
+          showSlide(index);
+          slideTimer = setInterval(nextSlide, slideInterval);
+        });
+      });
+      
+      // Pausa a rotação automática quando o mouse está sobre o banner
+      const bannerContainer = document.querySelector('.banner-container');
+      bannerContainer.addEventListener('mouseenter', function() {
+        clearInterval(slideTimer);
+      });
+      
+      bannerContainer.addEventListener('mouseleave', function() {
+        slideTimer = setInterval(nextSlide, slideInterval);
+      });
+    });
+
+    // Função para abrir modal
+    function openModal(n) {
+      modalBox.innerHTML = `
+        <h2 class="modal-title">${n.title}</h2>
+        <div class="modal-meta">
+          <span><i class="far fa-clock"></i> ${n.date}</span>
+          <span><i class="fas fa-tag"></i> ${n.category}</span>
+        </div>
+        <img src="${n.img}" alt="${n.title}" />
+        <div class="modal-content">
+          <p>${n.full}</p>
+        </div>
+        <button class="close-btn" onclick="closeModal()">Fechar</button>
+      `;
+      modalBg.classList.add("active");
+      document.body.style.overflow = "hidden";
+    }
+
+    // Função para fechar modal
+    function closeModal() {
+      modalBg.classList.remove("active");
+      document.body.style.overflow = "auto";
+    }
+
+    // Fechar modal ao clicar fora
+    modalBg.addEventListener('click', (e) => {
+      if (e.target === modalBg) {
+        closeModal();
+      }
+    });
+  </script>
+</body>
+</html>
