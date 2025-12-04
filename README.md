@@ -61,9 +61,4 @@ Abra um Pull Request explicando as mudanças.
 Licença
 Este projeto está sob a licença MIT — sinta‑se livre para usar, modificar ou distribuir conforme necessário. (ou outra se preferir)
 
- Contato / Informações (opcional)
 Autor / Responsável: Lino Simango
-
-Email: se quiseres adicionar contato
-
-Observações: Aqui podes inserir notas sobre atualizações, roadmap, ou avisos aos colaboradores.
